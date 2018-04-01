@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+clox
 
 # Object files
 *.o
