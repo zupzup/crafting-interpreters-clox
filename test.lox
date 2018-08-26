@@ -1,2 +1,1 @@
-var blub = 5;
-print(blub);
+(5 + 5) - 1
