@@ -60,17 +60,17 @@ static bool isFalsey(Value value) {
 }
 
 static void concatenate() {
-  ObjString* b = AS_STRING(pop());
-  ObjString* a = AS_STRING(pop());
+    ObjString* b = AS_STRING(pop());
+    ObjString* a = AS_STRING(pop());
 
-  int length = a->length + b->length;
-  char* chars = ALLOCATE(char, length + 1);
-  memcpy(chars, a->chars, a->length);
-  memcpy(chars + a->length, b->chars, b->length);
-  chars[length] = '\0';
+    int length = a->length + b->length;
+    char* chars = ALLOCATE(char, length + 1);
+    memcpy(chars, a->chars, a->length);
+    memcpy(chars + a->length, b->chars, b->length);
+    chars[length] = '\0';
 
-  ObjString* result = takeString(chars, length);
-  push(OBJ_VAL(result));
+    ObjString* result = takeString(chars, length);
+    push(OBJ_VAL(result));
 }
 
 static InterpretResult run() {
@@ -87,6 +87,8 @@ static InterpretResult run() {
         push(valueType(a op b)); \
     } while (false)
 #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
+#define READ_SHORT() \
+    (vm.ip += 2, (uint16_t)((vm.ip[-2] << 8) | vm.ip[-1]))
 #define READ_STRING() AS_STRING(READ_CONSTANT())
 
     for (;;) {
@@ -189,15 +191,31 @@ static InterpretResult run() {
                                printf("\n");
                                break;
                            }
+            case OP_JUMP: {
+                              uint16_t offset = READ_SHORT();
+                              vm.ip += offset;
+                              break;
+                          }
+            case OP_JUMP_IF_FALSE: {
+                                       uint16_t offset = READ_SHORT();
+                                       if (isFalsey(peek(0))) vm.ip += offset;
+                                       break;
+                                   }
+            case OP_LOOP: {
+                              uint16_t offset = READ_SHORT();
+                              vm.ip -= offset;
+                              break;
+                          }
             case OP_RETURN:
-                           {
-                               return INTERPRET_OK;
-                           }
+                                   {
+                                       return INTERPRET_OK;
+                                   }
         }
     }
 
 #undef READ_BYTE
 #undef READ_STRING
+#undef READ_SHORT
 #undef READ_CONSTANT
 #undef BINARY_OP
 }

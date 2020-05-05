@@ -7,3 +7,14 @@ print breakfast;
 {
   var yay = "yay";
 }
+if (true) {
+    print "true";
+}
+
+{
+    var i = 0;
+    while (i != 3) {
+        print("loooop");
+        i = i + 1;
+    }
+}
