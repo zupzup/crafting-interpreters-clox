@@ -19,6 +19,8 @@ typedef enum {
     OP_NEGATE,
     OP_POP,
     OP_PRINT,
+    OP_GET_LOCAL,
+    OP_SET_LOCAL, 
     OP_ADD,
     OP_SUBTRACT,
     OP_MULTIPLY,
