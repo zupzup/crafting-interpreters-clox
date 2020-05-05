@@ -1,20 +1,8 @@
-var breakfast = "beignets";
-var beverage = "cafe au lait";
-breakfast = "beignets with " + beverage;
-
-print breakfast;
-
-{
-  var yay = "yay";
-}
-if (true) {
-    print "true";
+fun fib(n) {
+  if (n < 2) return n;
+  return fib(n - 2) + fib(n - 1);
 }
 
-{
-    var i = 0;
-    while (i != 3) {
-        print("loooop");
-        i = i + 1;
-    }
-}
+var start = clock();
+print fib(10);
+print clock() - start;

@@ -23,6 +23,7 @@ typedef enum {
     OP_JUMP_IF_FALSE,
     OP_JUMP,
     OP_LOOP,
+    OP_CALL,
     OP_SET_LOCAL,
     OP_ADD,
     OP_SUBTRACT,
